@@ -27,7 +27,7 @@ namespace Safe_Audit.PL
             pnlSidebar.BackColor = HelperMethods.HeaderColor;
 
             // تطبيق التنسيقات العامة
-            HelperMethods.ApplyRoundedCorners(this, 25);
+            HelperMethods.ApplyModernCorners(this, 25);
             HelperMethods.StyleButtons(this);
         }
 

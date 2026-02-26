@@ -67,9 +67,9 @@ namespace Safe_Audit.PL
         private void UpdateLayoutDesign()
         {
             // استدعاء مباشر من الكلاس الجديد
-            HelperMethods.ApplyRoundedCorners(grpInputs, 25);
-            HelperMethods.ApplyRoundedCorners(dgvAccounts, 20);
-            HelperMethods.ApplyRoundedCorners(this, 30);
+            HelperMethods.ApplyModernCorners(grpInputs, 25);
+            HelperMethods.ApplyModernCorners(dgvAccounts, 20);
+            HelperMethods.ApplyModernCorners(this, 30);
         }
 
         // 4. لضمان ثبات الحواف عند تغيير الحجم

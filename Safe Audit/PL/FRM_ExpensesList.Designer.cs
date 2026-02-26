@@ -32,6 +32,7 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.dgvExpenses = new System.Windows.Forms.DataGridView();
             this.pnlFooter = new System.Windows.Forms.Panel();
+            this.lblTotalAmount = new System.Windows.Forms.Label();
             this.bindingNavigator1 = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
             this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
@@ -42,7 +43,6 @@
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.lblTotalAmount = new System.Windows.Forms.Label();
             this.pnlHeader.SuspendLayout();
             this.grpFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvExpenses)).BeginInit();
@@ -159,7 +159,7 @@
             this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(6, 29);
+            this.btnSearch.Location = new System.Drawing.Point(28, 29);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(100, 30);
             this.btnSearch.TabIndex = 6;
@@ -190,6 +190,18 @@
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(884, 75);
             this.pnlFooter.TabIndex = 4;
+            // 
+            // lblTotalAmount
+            // 
+            this.lblTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalAmount.AutoSize = true;
+            this.lblTotalAmount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblTotalAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
+            this.lblTotalAmount.Location = new System.Drawing.Point(654, 40);
+            this.lblTotalAmount.Name = "lblTotalAmount";
+            this.lblTotalAmount.Size = new System.Drawing.Size(171, 21);
+            this.lblTotalAmount.TabIndex = 0;
+            this.lblTotalAmount.Text = "إجمالي المصروفات: 0.00";
             // 
             // bindingNavigator1
             // 
@@ -229,6 +241,7 @@
             this.bindingNavigatorMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
             this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
+            this.bindingNavigatorMoveFirstItem.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
             this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(23, 22);
             this.bindingNavigatorMoveFirstItem.Text = "Move first";
@@ -284,18 +297,6 @@
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // lblTotalAmount
-            // 
-            this.lblTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotalAmount.AutoSize = true;
-            this.lblTotalAmount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTotalAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(57)))), ((int)(((byte)(43)))));
-            this.lblTotalAmount.Location = new System.Drawing.Point(654, 40);
-            this.lblTotalAmount.Name = "lblTotalAmount";
-            this.lblTotalAmount.Size = new System.Drawing.Size(171, 21);
-            this.lblTotalAmount.TabIndex = 0;
-            this.lblTotalAmount.Text = "إجمالي المصروفات: 0.00";
-            // 
             // FRM_ExpensesList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -311,7 +312,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FRM_ExpensesList";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.FRM_ExpensesList_Load);
             this.pnlHeader.ResumeLayout(false);

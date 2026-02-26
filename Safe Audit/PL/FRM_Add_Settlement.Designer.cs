@@ -205,7 +205,7 @@
             this.grpCash.Controls.Add(this.cmbInstaAccName);
             this.grpCash.Controls.Add(this.btnAddPayment);
             this.grpCash.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.grpCash.Location = new System.Drawing.Point(411, 84);
+            this.grpCash.Location = new System.Drawing.Point(6, 86);
             this.grpCash.Margin = new System.Windows.Forms.Padding(2);
             this.grpCash.Name = "grpCash";
             this.grpCash.Padding = new System.Windows.Forms.Padding(2);
@@ -734,7 +734,7 @@
             this.grpOther.Controls.Add(this.cmbDevices);
             this.grpOther.Controls.Add(this.lblDiffTitle);
             this.grpOther.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpOther.Location = new System.Drawing.Point(11, 85);
+            this.grpOther.Location = new System.Drawing.Point(558, 95);
             this.grpOther.Margin = new System.Windows.Forms.Padding(2);
             this.grpOther.Name = "grpOther";
             this.grpOther.Padding = new System.Windows.Forms.Padding(2);
@@ -893,7 +893,7 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(411, 673);
+            this.btnSave.Location = new System.Drawing.Point(23, 677);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(506, 45);
@@ -908,7 +908,7 @@
             this.lblTotalDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTotalDisplay.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblTotalDisplay.ForeColor = System.Drawing.Color.Navy;
-            this.lblTotalDisplay.Location = new System.Drawing.Point(411, 587);
+            this.lblTotalDisplay.Location = new System.Drawing.Point(23, 591);
             this.lblTotalDisplay.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTotalDisplay.Name = "lblTotalDisplay";
             this.lblTotalDisplay.Size = new System.Drawing.Size(506, 49);
@@ -924,14 +924,13 @@
             this.Controls.Add(this.grpOther);
             this.Controls.Add(this.grpCash);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.lblTotalDisplay);
             this.Controls.Add(this.pnlHeader);
+            this.Controls.Add(this.lblTotalDisplay);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "FRM_Add_Settlement";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "إضافة تسوية مالية";
             this.Load += new System.EventHandler(this.FRM_Add_Settlement_Load);
