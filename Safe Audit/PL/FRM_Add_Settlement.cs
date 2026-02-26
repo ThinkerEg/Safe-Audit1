@@ -287,12 +287,11 @@ namespace Safe_Audit.PL
                                 (txt20.Value * 20) + (txt10.Value * 10) + (txt5.Value * 5) + (txt1.Value * 1);
             lblTotal.Text = cashTotal.ToString("N2");
 
-            // 2. حساب المدفوعات الرقمية (الفيزا/انستا)
+            // 2. حساب المدفوعات الرقمية - باستخدام حلقة آمنة
             decimal digitalTotal = 0;
             foreach (DataGridViewRow row in dgvPayments.Rows)
             {
-                if (row.IsNewRow) continue;
-                // تأكد أن المبلغ في العمود رقم 3 (الرابع)
+                if (row.IsNewRow || row.Cells[3].Value == null) continue;
                 digitalTotal += Convert.ToDecimal(row.Cells[3].Value);
             }
             lblDigitalTotal.Text = digitalTotal.ToString("N2");
@@ -301,21 +300,74 @@ namespace Safe_Audit.PL
             decimal expensesTotal = 0;
             foreach (DataGridViewRow row in dgvExpenses.Rows)
             {
-                if (row.IsNewRow) continue;
-                // بناءً على تصميمك (image_6053df): المبلغ هو العمود رقم 2 (الثالث)
+                if (row.IsNewRow || row.Cells[2].Value == null) continue;
                 expensesTotal += Convert.ToDecimal(row.Cells[2].Value);
             }
             lblExpensesTotal.Text = expensesTotal.ToString("N2");
 
-            // 4. التحديثات النهائية
+            // 4. الحسابات النهائية (المراية)
+            // إجمالي المقبوضات (كاش + فيزا)
             lblTotalDisplay.Text = (cashTotal + digitalTotal).ToString("N2");
-            decimal actualTotal = cashTotal + digitalTotal + expensesTotal;
+
+            // المبلغ الذي يجب أن يكون موجوداً (صافي الوردية)
+            decimal actualTotal = (cashTotal + digitalTotal + expensesTotal);
             decimal finalDiff = actualTotal - numSystemAmount.Value;
 
-            lblFinalDiff.Text = finalDiff.ToString("N2");
-            lblStatus.Text = finalDiff == 0 ? "تمام" : (finalDiff < 0 ? "عجز" : "زيادة");
-            lblStatus.ForeColor = finalDiff == 0 ? Color.Green : (finalDiff < 0 ? Color.Red : Color.Blue);
+            lblFinalDiff.Text = Math.Abs(finalDiff).ToString("N2"); // عرض الرقم الموجب
+
+            // تحديد الحالة
+            if (finalDiff == 0)
+            {
+                lblStatus.Text = "تمام (مطابق)";
+                lblStatus.ForeColor = Color.Green;
+            }
+            else if (finalDiff < 0)
+            {
+                lblStatus.Text = "عجز بمبلغ: " + Math.Abs(finalDiff).ToString("N2");
+                lblStatus.ForeColor = Color.Red;
+            }
+            else
+            {
+                lblStatus.Text = "زيادة بمبلغ: " + finalDiff.ToString("N2");
+                lblStatus.ForeColor = Color.Blue;
+            }
         }
+        //private void CalculateTotals()
+        //{
+        //    // 1. حساب الكاش الفعلي
+        //    decimal cashTotal = (txt200.Value * 200) + (txt100.Value * 100) + (txt50.Value * 50) +
+        //                        (txt20.Value * 20) + (txt10.Value * 10) + (txt5.Value * 5) + (txt1.Value * 1);
+        //    lblTotal.Text = cashTotal.ToString("N2");
+
+        //    // 2. حساب المدفوعات الرقمية (الفيزا/انستا)
+        //    decimal digitalTotal = 0;
+        //    foreach (DataGridViewRow row in dgvPayments.Rows)
+        //    {
+        //        if (row.IsNewRow) continue;
+        //        // تأكد أن المبلغ في العمود رقم 3 (الرابع)
+        //        digitalTotal += Convert.ToDecimal(row.Cells[3].Value);
+        //    }
+        //    lblDigitalTotal.Text = digitalTotal.ToString("N2");
+
+        //    // 3. حساب المصروفات
+        //    decimal expensesTotal = 0;
+        //    foreach (DataGridViewRow row in dgvExpenses.Rows)
+        //    {
+        //        if (row.IsNewRow) continue;
+        //        // بناءً على تصميمك (image_6053df): المبلغ هو العمود رقم 2 (الثالث)
+        //        expensesTotal += Convert.ToDecimal(row.Cells[2].Value);
+        //    }
+        //    lblExpensesTotal.Text = expensesTotal.ToString("N2");
+
+        //    // 4. التحديثات النهائية
+        //    lblTotalDisplay.Text = (cashTotal + digitalTotal).ToString("N2");
+        //    decimal actualTotal = cashTotal + digitalTotal + expensesTotal;
+        //    decimal finalDiff = actualTotal - numSystemAmount.Value;
+
+        //    lblFinalDiff.Text = finalDiff.ToString("N2");
+        //    lblStatus.Text = finalDiff == 0 ? "تمام" : (finalDiff < 0 ? "عجز" : "زيادة");
+        //    lblStatus.ForeColor = finalDiff == 0 ? Color.Green : (finalDiff < 0 ? Color.Red : Color.Blue);
+        //}
         private void ClearForm()
         {
             // 1. جلب الـ ID الجديد (ID الوردية اللي عليها الدور)
