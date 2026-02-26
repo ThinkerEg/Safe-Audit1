@@ -18,6 +18,7 @@
         private void InitializeComponent()
         {
             this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.btn_ExpensesList = new System.Windows.Forms.Button();
             this.btnSettlement = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnTransfers = new System.Windows.Forms.Button();
@@ -25,7 +26,7 @@
             this.btnAccounts = new System.Windows.Forms.Button();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.btn_ExpensesList = new System.Windows.Forms.Button();
+            this.btn_Search_Settlements = new System.Windows.Forms.Button();
             this.pnlSidebar.SuspendLayout();
             this.pnlHeader.SuspendLayout();
             this.SuspendLayout();
@@ -33,6 +34,7 @@
             // pnlSidebar
             // 
             this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.pnlSidebar.Controls.Add(this.btn_Search_Settlements);
             this.pnlSidebar.Controls.Add(this.btn_ExpensesList);
             this.pnlSidebar.Controls.Add(this.btnSettlement);
             this.pnlSidebar.Controls.Add(this.btnExit);
@@ -44,6 +46,19 @@
             this.pnlSidebar.Name = "pnlSidebar";
             this.pnlSidebar.Size = new System.Drawing.Size(200, 450);
             this.pnlSidebar.TabIndex = 1;
+            // 
+            // btn_ExpensesList
+            // 
+            this.btn_ExpensesList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_ExpensesList.FlatAppearance.BorderSize = 0;
+            this.btn_ExpensesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ExpensesList.ForeColor = System.Drawing.Color.White;
+            this.btn_ExpensesList.Location = new System.Drawing.Point(0, 240);
+            this.btn_ExpensesList.Name = "btn_ExpensesList";
+            this.btn_ExpensesList.Size = new System.Drawing.Size(200, 60);
+            this.btn_ExpensesList.TabIndex = 5;
+            this.btn_ExpensesList.Text = "إدارة المصروفات";
+            this.btn_ExpensesList.Click += new System.EventHandler(this.btn_ExpensesList_Click);
             // 
             // btnSettlement
             // 
@@ -137,18 +152,18 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "نظام الخزينة والتدقيق";
             // 
-            // btn_ExpensesList
+            // btn_Search_Settlements
             // 
-            this.btn_ExpensesList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_ExpensesList.FlatAppearance.BorderSize = 0;
-            this.btn_ExpensesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ExpensesList.ForeColor = System.Drawing.Color.White;
-            this.btn_ExpensesList.Location = new System.Drawing.Point(0, 240);
-            this.btn_ExpensesList.Name = "btn_ExpensesList";
-            this.btn_ExpensesList.Size = new System.Drawing.Size(200, 60);
-            this.btn_ExpensesList.TabIndex = 5;
-            this.btn_ExpensesList.Text = "إدارة المصروفات";
-            this.btn_ExpensesList.Click += new System.EventHandler(this.btn_ExpensesList_Click);
+            this.btn_Search_Settlements.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_Search_Settlements.FlatAppearance.BorderSize = 0;
+            this.btn_Search_Settlements.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Search_Settlements.ForeColor = System.Drawing.Color.White;
+            this.btn_Search_Settlements.Location = new System.Drawing.Point(0, 300);
+            this.btn_Search_Settlements.Name = "btn_Search_Settlements";
+            this.btn_Search_Settlements.Size = new System.Drawing.Size(200, 60);
+            this.btn_Search_Settlements.TabIndex = 6;
+            this.btn_Search_Settlements.Text = "إدارة المصروفات";
+            this.btn_Search_Settlements.Click += new System.EventHandler(this.btn_Search_Settlements_Click);
             // 
             // FRM_Main
             // 
@@ -179,5 +194,6 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Button btnSettlement;
         private System.Windows.Forms.Button btn_ExpensesList;
+        private System.Windows.Forms.Button btn_Search_Settlements;
     }
 }

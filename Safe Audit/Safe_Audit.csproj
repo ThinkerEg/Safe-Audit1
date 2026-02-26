@@ -85,6 +85,12 @@
     <Compile Include="PL\FRM_Main.Designer.cs">
       <DependentUpon>FRM_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="PL\FRM_Search_Settlements.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PL\FRM_Search_Settlements.Designer.cs">
+      <DependentUpon>FRM_Search_Settlements.cs</DependentUpon>
+    </Compile>
     <Compile Include="PL\FRM_Transfers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PL\FRM_Main.resx">
       <DependentUpon>FRM_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PL\FRM_Search_Settlements.resx">
+      <DependentUpon>FRM_Search_Settlements.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PL\FRM_Transfers.resx">
       <DependentUpon>FRM_Transfers.cs</DependentUpon>

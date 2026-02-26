@@ -132,5 +132,22 @@ namespace Safe_Audit.BL
             // استدعاء الإجراء المخزن الجديد الذي أنشأناه (الذي يحتوي على الـ JOIN)
             return DAL.SelectData("SP_GET_SETTLEMENT_PAYMENTS_FOR_EDIT", param);
         }
+        // دالة البحث الشاملة في الورديات
+        public DataTable SearchSettlements(DateTime fromDate, DateTime toDate, int? shiftID, int? cashierID, string shiftType, int? deviceID)
+        {
+            SqlParameter[] param = new SqlParameter[6];
+
+            param[0] = new SqlParameter("@From", SqlDbType.DateTime) { Value = fromDate };
+            param[1] = new SqlParameter("@To", SqlDbType.DateTime) { Value = toDate };
+
+            // التعامل مع القيم التي قد تكون Null (إذا لم يختارها المستخدم)
+            param[2] = new SqlParameter("@ID", SqlDbType.Int) { Value = (object)shiftID ?? DBNull.Value };
+            param[3] = new SqlParameter("@Cashier", SqlDbType.Int) { Value = (object)cashierID ?? DBNull.Value };
+            param[4] = new SqlParameter("@Type", SqlDbType.NVarChar, 50) { Value = (object)shiftType ?? DBNull.Value };
+            param[5] = new SqlParameter("@Device", SqlDbType.Int) { Value = (object)deviceID ?? DBNull.Value };
+
+            // استدعاء الإجراء المخزن من خلال طبقة الوصول للبيانات DAL
+            return DAL.SelectData("SP_SEARCH_SETTLEMENTS", param);
+        }
     }
 }

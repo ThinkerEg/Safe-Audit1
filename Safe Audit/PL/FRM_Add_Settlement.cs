@@ -435,7 +435,7 @@ namespace Safe_Audit.PL
         {
            // lblTotalDisplay.Text = Convert.ToDecimal(lblTotal.Text) + Convert.ToDecimal(lblDigitalTotal.Text) + "";
         }
-        private void btnSearchShift_Click(object sender, EventArgs e)
+        public void btnSearchShift_Click(object sender, EventArgs e)
         {
             try
             {
