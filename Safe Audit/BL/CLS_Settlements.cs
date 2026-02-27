@@ -149,5 +149,39 @@ namespace Safe_Audit.BL
             // استدعاء الإجراء المخزن من خلال طبقة الوصول للبيانات DAL
             return DAL.SelectData("SP_SEARCH_SETTLEMENTS", param);
         }
+        public void UpdateFullSettlement(decimal shiftID, int cashierID, int deviceID, int userID,
+                                 DateTime date, string type, decimal sysAmt,
+                                 decimal actCash, decimal actDigi, decimal totalExp,
+                                 decimal diff, string status,
+                                 int f200, int f100, int f50, int f20, int f10, int f5, int f1,
+                                 DataTable dtPay, DataTable dtExp)
+        {
+            DAL.Open();
+            SqlParameter[] param = new SqlParameter[21];
+            param[0] = new SqlParameter("@ShiftID", SqlDbType.Decimal) { Value = shiftID };
+            param[1] = new SqlParameter("@CashierID", SqlDbType.Int) { Value = cashierID };
+            param[2] = new SqlParameter("@DeviceID", SqlDbType.Int) { Value = deviceID };
+            param[3] = new SqlParameter("@UserID", SqlDbType.Int) { Value = userID };
+            param[4] = new SqlParameter("@Date", SqlDbType.DateTime) { Value = date };
+            param[5] = new SqlParameter("@Type", SqlDbType.NVarChar, 20) { Value = type };
+            param[6] = new SqlParameter("@SysAmt", SqlDbType.Decimal) { Value = sysAmt };
+            param[7] = new SqlParameter("@ActCash", SqlDbType.Decimal) { Value = actCash };
+            param[8] = new SqlParameter("@ActDigi", SqlDbType.Decimal) { Value = actDigi };
+            param[9] = new SqlParameter("@TotalExp", SqlDbType.Decimal) { Value = totalExp };
+            param[10] = new SqlParameter("@Diff", SqlDbType.Decimal) { Value = diff };
+            param[11] = new SqlParameter("@Status", SqlDbType.NVarChar, 50) { Value = status };
+            param[12] = new SqlParameter("@f200", SqlDbType.Int) { Value = f200 };
+            param[13] = new SqlParameter("@f100", SqlDbType.Int) { Value = f100 };
+            param[14] = new SqlParameter("@f50", SqlDbType.Int) { Value = f50 };
+            param[15] = new SqlParameter("@f20", SqlDbType.Int) { Value = f20 };
+            param[16] = new SqlParameter("@f10", SqlDbType.Int) { Value = f10 };
+            param[17] = new SqlParameter("@f5", SqlDbType.Int) { Value = f5 };
+            param[18] = new SqlParameter("@f1", SqlDbType.Int) { Value = f1 };
+            param[19] = new SqlParameter("@Payments", SqlDbType.Structured) { TypeName = "dbo.PaymentTableType", Value = dtPay };
+            param[20] = new SqlParameter("@Expenses", SqlDbType.Structured) { TypeName = "dbo.ExpenseTableType", Value = dtExp };
+
+            DAL.ExecuteCommand("SP_UPDATE_FULL_SETTLEMENT", param);
+            DAL.Close();
+        }
     }
 }

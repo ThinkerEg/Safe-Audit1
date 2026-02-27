@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Safe_Audit</RootNamespace>
     <AssemblyName>Safe Audit</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -53,6 +53,7 @@
     <Compile Include="BL\CLS_Expenses.cs" />
     <Compile Include="BL\CLS_Permissions.cs" />
     <Compile Include="BL\CLS_Settlements.cs" />
+    <Compile Include="BL\GlobalUser.cs" />
     <Compile Include="BL\HelperMethods.cs" />
     <Compile Include="DAL\DataAccessLayer.cs" />
     <Compile Include="PL\FRM_AccountStatement.cs">

@@ -116,17 +116,13 @@ namespace Safe_Audit.PL
         {
             if (e.RowIndex >= 0)
             {
-                // 1. استخراج رقم الوردية من الصف المختار
                 decimal sID = Convert.ToDecimal(dgvResults.Rows[e.RowIndex].Cells["رقم الوردية"].Value);
 
-                // 2. فتح فورم الإضافة
                 FRM_Add_Settlement frm = new FRM_Add_Settlement();
 
-                // 3. استدعاء دالة البحث الموجودة داخل فورم الإضافة وإعطاؤها الرقم
-                // نمرر null للـ sender و e لأننا نناديها برمجياً
-                frm.btnSearchShift_Click(null, null, sID);
+                // نمرر الرقم للمتغير العام في فورم الإضافة
+                frm.IncomingShiftID = sID;
 
-                // 4. عرض الفورم
                 frm.ShowDialog();
             }
         }

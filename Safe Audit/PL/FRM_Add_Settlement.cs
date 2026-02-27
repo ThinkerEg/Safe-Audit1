@@ -11,7 +11,9 @@ namespace Safe_Audit.PL
     {
         // استدعاء طبقة العمليات
         CLS_Settlements settlement = new CLS_Settlements();
-
+        bool IsEditMode = false;
+        // متغير لحفظ الرقم القادم من شاشة البحث (إفتراضياً 0 يعني إضافة جديدة)
+        public decimal IncomingShiftID = 0;
         public FRM_Add_Settlement()
         {
             InitializeComponent();
@@ -109,14 +111,13 @@ namespace Safe_Audit.PL
         // 4. زر الحفظ النهائي لقاعدة البيانات
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // 1. التحقق الذكي من الحقول وتلوين الفارغ منها
+            // 1. التحقق الذكي من الحقول
             if (HelperMethods.IsValid(this))
             {
                 try
                 {
-                    // 2. تجهيز جداول البيانات (TVP)
-
-                    // --- جدول المدفوعات ---
+                    // 2. تجهيز جداول البيانات (TVP) - الكود الخاص بك كما هو
+                    // --- 1. تجهيز جدول المدفوعات (Digital Payments) ---
                     DataTable dtPayments = new DataTable();
                     dtPayments.Columns.Add("MethodID", typeof(int));
                     dtPayments.Columns.Add("Amount", typeof(decimal));
@@ -124,14 +125,14 @@ namespace Safe_Audit.PL
                     foreach (DataGridViewRow row in dgvPayments.Rows)
                     {
                         if (row.IsNewRow) continue;
-                        // نأخذ MethodID من الخلية [0] والمبلغ من الخلية [3] حسب تصميمك
+                        // تأكد أن الخلية 0 هي الـ ID والخلية 3 هي المبلغ (أو حسب ترتيبك في الـ Designer)
                         if (row.Cells[0].Value != null && row.Cells[3].Value != null)
                         {
                             dtPayments.Rows.Add(row.Cells[0].Value, row.Cells[3].Value);
                         }
                     }
 
-                    // --- جدول المصروفات ---
+                    // --- 2. تجهيز جدول المصروفات (Expenses) ---
                     DataTable dtExpenses = new DataTable();
                     dtExpenses.Columns.Add("Reason", typeof(string));
                     dtExpenses.Columns.Add("Amount", typeof(decimal));
@@ -139,147 +140,208 @@ namespace Safe_Audit.PL
                     foreach (DataGridViewRow row in dgvExpenses.Rows)
                     {
                         if (row.IsNewRow) continue;
-                        // نأخذ السبب من الخلية [1] والمبلغ من الخلية [2]
+                        // تأكد أن الخلية 1 هي السبب والخلية 2 هي المبلغ
                         if (row.Cells[1].Value != null && row.Cells[2].Value != null)
                         {
                             dtExpenses.Rows.Add(row.Cells[1].Value, row.Cells[2].Value);
                         }
                     }
 
-                    // 3. استدعاء الدالة الشاملة للحفظ
-                    settlement.SaveFullSettlement(
-                        numShiftID.Value,
-                        Convert.ToInt32(cmbCashier.SelectedValue),
-                        Convert.ToInt32(cmbDevices.SelectedValue),
-                        1, // يمكن استبداله بـ GlobalUserID.ID لاحقاً
-                        date_P.Value,
-                        cmbShift.Text,
-                        numSystemAmount.Value,
-                        Convert.ToDecimal(lblTotal.Text),
-                        Convert.ToDecimal(lblDigitalTotal.Text),
-                        Convert.ToDecimal(lblExpensesTotal.Text),
-                        Convert.ToDecimal(lblFinalDiff.Text),
-                        lblStatus.Text,
-                        (int)txt200.Value, (int)txt100.Value, (int)txt50.Value, (int)txt20.Value,
-                        (int)txt10.Value, (int)txt5.Value, (int)txt1.Value,
-                        dtPayments,
-                        dtExpenses
-                    );
+                    // --- التعديل الجوهري هنا (القرار الذكي) ---
 
-                    //// 4. إنهاء العملية بنجاح
-                    //MessageBox.Show("تم حفظ وإتمام تصفية الوردية بنجاح وتحديث أرصدة الخزينة والحسابات", "تم الحفظ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    //// تنظيف الحقول للعملية التالية
-                    //HelperMethods.ClearFields(this);
-                    //dgvPayments.Rows.Clear();
-                    //dgvExpenses.Rows.Clear();
-                    //numSearchID.Focus();
-                    // 4. إنهاء العملية بنجاح
-                    MessageBox.Show("تم حفظ وإتمام تصفية الوردية بنجاح وتحديث أرصدة الخزينة والحسابات", "تم الحفظ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // --- الحل هنا ---
-
-                    // 5. تنظيف الحقول 
-                    HelperMethods.ClearFields(this);
-                    dgvPayments.Rows.Clear();
-                    dgvExpenses.Rows.Clear();
-
-                    // 6. تحديث رقم الوردية الجديد تلقائياً (عشان ميبقاش صفر)
-                    // افترضنا إن عندك دالة اسمها GetNextShiftID أو بتنادي الـ SP اللي اسمها GET_LAST_SHIFT_ID
-                    // 1. جلب الـ ID الجديد (ID الوردية اللي عليها الدور)
-                    DataTable dt = settlement.GET_LAST_SHIFT_ID();
-                    numShiftID.Value = (dt.Rows.Count > 0 && dt.Rows[0][0] != DBNull.Value)
-                                       ? Convert.ToInt32(dt.Rows[0][0]) + 1 : 1;
-
-                    // 7. إعادة ضبط الألوان (عشان نشيل اللون الأحمر اللي ظهر غلط)
-                    foreach (Control c in this.Controls)
+                    if (IsEditMode) // حالة التعديل والرقابة
                     {
-                        if (c is TextBox || c is NumericUpDown)
-                            c.BackColor = Color.White; // أو اللون الطبيعي للفورم
+                        settlement.UpdateFullSettlement(
+                            numShiftID.Value,
+                            Convert.ToInt32(cmbCashier.SelectedValue),
+                            Convert.ToInt32(cmbDevices.SelectedValue),
+                            1, // UserID
+                            date_P.Value,
+                            cmbShift.Text,
+                            numSystemAmount.Value,
+                            Convert.ToDecimal(lblTotal.Text),
+                            Convert.ToDecimal(lblDigitalTotal.Text),
+                            Convert.ToDecimal(lblExpensesTotal.Text),
+                            Convert.ToDecimal(lblFinalDiff.Text),
+                            lblStatus.Text,
+                            (int)txt200.Value, (int)txt100.Value, (int)txt50.Value, (int)txt20.Value,
+                            (int)txt10.Value, (int)txt5.Value, (int)txt1.Value,
+                            dtPayments,
+                            dtExpenses
+                        );
+
+                        MessageBox.Show("تم تعديل الوردية بنجاح وتسجيل الخلاصة المخطئة في سجل الرقابة.", "تم التعديل", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else // حالة الإضافة الجديدة (كودك الأصلي)
+                    {
+                        settlement.SaveFullSettlement(
+                            numShiftID.Value,
+                            Convert.ToInt32(cmbCashier.SelectedValue),
+                            Convert.ToInt32(cmbDevices.SelectedValue),
+                            1,
+                            date_P.Value,
+                            cmbShift.Text,
+                            numSystemAmount.Value,
+                            Convert.ToDecimal(lblTotal.Text),
+                            Convert.ToDecimal(lblDigitalTotal.Text),
+                            Convert.ToDecimal(lblExpensesTotal.Text),
+                            Convert.ToDecimal(lblFinalDiff.Text),
+                            lblStatus.Text,
+                            (int)txt200.Value, (int)txt100.Value, (int)txt50.Value, (int)txt20.Value,
+                            (int)txt10.Value, (int)txt5.Value, (int)txt1.Value,
+                            dtPayments,
+                            dtExpenses
+                        );
+
+                        MessageBox.Show("تم حفظ وإتمام تصفية الوردية بنجاح وتحديث أرصدة الخزينة والحسابات", "تم الحفظ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
-                    numSearchID.Focus();
+                    // 5. تنظيف الحقول والعودة للوضع الطبيعي (نفس كودك مع إضافة تصفير الـ IsEditMode)
+                    ClearFormAfterSave();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("حدث خطأ أثناء الحفظ: " + ex.Message, "خطأ تقني", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("حدث خطأ أثناء المعالجة: " + ex.Message, "خطأ تقني", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                // رسالة تنبيه في حال وجود حقول ناقصة (سيقوم الهيلبر بتلوينها بالأحمر تلقائياً)
                 MessageBox.Show("يرجى ملء الحقول المطلوبة الملونة بالأحمر أولاً.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+        private void ClearFormAfterSave()
+        {
+            // 1. تنظيف الحقول الأساسية باستخدام الهيلبر
+            HelperMethods.ClearFields(this);
+            dgvPayments.Rows.Clear();
+            dgvExpenses.Rows.Clear();
+
+            // 2. تصفير وضع التعديل وإعادة الزر لحالته الطبيعية
+            IsEditMode = false;
+            btnSave.Text = "حفظ وإتمام";
+            btnSave.BackColor = Color.FromArgb(1, 150, 200); // لونك الأصلي للحفظ
+            numShiftID.Enabled = true;
+
+            // 3. جلب رقم الوردية الجديد تلقائياً
+            DataTable dt = settlement.GET_LAST_SHIFT_ID();
+            numShiftID.Value = (dt.Rows.Count > 0 && dt.Rows[0][0] != DBNull.Value)
+                                ? Convert.ToInt32(dt.Rows[0][0]) + 1 : 1;
+
+            // 4. إعادة ضبط ألوان الحقول للوضع الطبيعي
+            foreach (Control c in this.Controls)
+            {
+                if (c is TextBox || c is NumericUpDown)
+                    c.BackColor = Color.White;
+            }
+
+            numSearchID.Value = 0;
+            numSearchID.Focus();
+        }
         //private void btnSave_Click(object sender, EventArgs e)
         //{
-        //    Row_Paym = 1; Row_Exp = 1;
-        //    try
+        //    // 1. التحقق الذكي من الحقول وتلوين الفارغ منها
+        //    if (HelperMethods.IsValid(this))
         //    {
-        //        // 1. تحويل جدول المدفوعات (dgvPayments)
-        //        DataTable dtPayments = new DataTable();
-        //        dtPayments.Columns.Add("MethodID", typeof(int));
-        //        dtPayments.Columns.Add("Amount", typeof(decimal));
-
-        //        foreach (DataGridViewRow row in dgvPayments.Rows)
+        //        try
         //        {
-        //            if (row.IsNewRow) continue; // تخطي الصف الفارغ الأخير
+        //            // 2. تجهيز جداول البيانات (TVP)
 
-        //            // تحقق من أن الجريد فيها 3 أعمدة على الأقل قبل طلب الخلية [2]
-        //            if (row.Cells.Count >= 3 && row.Cells[2].Value != null)
-        //            {
+        //            // --- جدول المدفوعات ---
+        //            DataTable dtPayments = new DataTable();
+        //            dtPayments.Columns.Add("MethodID", typeof(int));
+        //            dtPayments.Columns.Add("Amount", typeof(decimal));
 
-        //                dtPayments.Rows.Add(row.Cells[1].Value, row.Cells[3].Value);
-        //            }
-        //            else if (row.Cells.Count == 2) // إذا كان الـ ID مخفي في عمود غير موجود، أبلغ المستخدم
+        //            foreach (DataGridViewRow row in dgvPayments.Rows)
         //            {
-        //                throw new Exception("جدول المدفوعات يفتقد لعمود المعرف (MethodID). تأكد من إضافة الـ SelectedValue في العمود الثالث.");
+        //                if (row.IsNewRow) continue;
+        //                // نأخذ MethodID من الخلية [0] والمبلغ من الخلية [3] حسب تصميمك
+        //                if (row.Cells[0].Value != null && row.Cells[3].Value != null)
+        //                {
+        //                    dtPayments.Rows.Add(row.Cells[0].Value, row.Cells[3].Value);
+        //                }
         //            }
+
+        //            // --- جدول المصروفات ---
+        //            DataTable dtExpenses = new DataTable();
+        //            dtExpenses.Columns.Add("Reason", typeof(string));
+        //            dtExpenses.Columns.Add("Amount", typeof(decimal));
+
+        //            foreach (DataGridViewRow row in dgvExpenses.Rows)
+        //            {
+        //                if (row.IsNewRow) continue;
+        //                // نأخذ السبب من الخلية [1] والمبلغ من الخلية [2]
+        //                if (row.Cells[1].Value != null && row.Cells[2].Value != null)
+        //                {
+        //                    dtExpenses.Rows.Add(row.Cells[1].Value, row.Cells[2].Value);
+        //                }
+        //            }
+
+        //            // 3. استدعاء الدالة الشاملة للحفظ
+        //            settlement.SaveFullSettlement(
+        //                numShiftID.Value,
+        //                Convert.ToInt32(cmbCashier.SelectedValue),
+        //                Convert.ToInt32(cmbDevices.SelectedValue),
+        //                1, // يمكن استبداله بـ GlobalUserID.ID لاحقاً
+        //                date_P.Value,
+        //                cmbShift.Text,
+        //                numSystemAmount.Value,
+        //                Convert.ToDecimal(lblTotal.Text),
+        //                Convert.ToDecimal(lblDigitalTotal.Text),
+        //                Convert.ToDecimal(lblExpensesTotal.Text),
+        //                Convert.ToDecimal(lblFinalDiff.Text),
+        //                lblStatus.Text,
+        //                (int)txt200.Value, (int)txt100.Value, (int)txt50.Value, (int)txt20.Value,
+        //                (int)txt10.Value, (int)txt5.Value, (int)txt1.Value,
+        //                dtPayments,
+        //                dtExpenses
+        //            );
+
+        //            //// 4. إنهاء العملية بنجاح
+        //            //MessageBox.Show("تم حفظ وإتمام تصفية الوردية بنجاح وتحديث أرصدة الخزينة والحسابات", "تم الحفظ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        //            //// تنظيف الحقول للعملية التالية
+        //            //HelperMethods.ClearFields(this);
+        //            //dgvPayments.Rows.Clear();
+        //            //dgvExpenses.Rows.Clear();
+        //            //numSearchID.Focus();
+        //            // 4. إنهاء العملية بنجاح
+        //            MessageBox.Show("تم حفظ وإتمام تصفية الوردية بنجاح وتحديث أرصدة الخزينة والحسابات", "تم الحفظ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+        //            // --- الحل هنا ---
+
+        //            // 5. تنظيف الحقول 
+        //            HelperMethods.ClearFields(this);
+        //            dgvPayments.Rows.Clear();
+        //            dgvExpenses.Rows.Clear();
+
+        //            // 6. تحديث رقم الوردية الجديد تلقائياً (عشان ميبقاش صفر)
+        //            // افترضنا إن عندك دالة اسمها GetNextShiftID أو بتنادي الـ SP اللي اسمها GET_LAST_SHIFT_ID
+        //            // 1. جلب الـ ID الجديد (ID الوردية اللي عليها الدور)
+        //            DataTable dt = settlement.GET_LAST_SHIFT_ID();
+        //            numShiftID.Value = (dt.Rows.Count > 0 && dt.Rows[0][0] != DBNull.Value)
+        //                               ? Convert.ToInt32(dt.Rows[0][0]) + 1 : 1;
+
+        //            // 7. إعادة ضبط الألوان (عشان نشيل اللون الأحمر اللي ظهر غلط)
+        //            foreach (Control c in this.Controls)
+        //            {
+        //                if (c is TextBox || c is NumericUpDown)
+        //                    c.BackColor = Color.White; // أو اللون الطبيعي للفورم
+        //            }
+
+        //            numSearchID.Focus();
         //        }
-
-        //        // 2. تحويل جدول المصروفات (dgvExpenses)
-        //        DataTable dtExpenses = new DataTable();
-        //        dtExpenses.Columns.Add("Reason", typeof(string));
-        //        dtExpenses.Columns.Add("Amount", typeof(decimal));
-
-        //        foreach (DataGridViewRow row in dgvExpenses.Rows)
+        //        catch (Exception ex)
         //        {
-        //            if (row.IsNewRow) continue;
-
-        //            if (row.Cells.Count >= 2 && row.Cells[0].Value != null)
-        //            {
-        //                dtExpenses.Rows.Add(row.Cells[1].Value, row.Cells[2].Value);
-        //            }
+        //            MessageBox.Show("حدث خطأ أثناء الحفظ: " + ex.Message, "خطأ تقني", MessageBoxButtons.OK, MessageBoxIcon.Error);
         //        }
-
-        //        // 3. استدعاء الدالة الشاملة (تطابق الإجراء المخزن المرفق)
-        //        settlement.SaveFullSettlement(
-        //            numShiftID.Value,
-        //            Convert.ToInt32(cmbCashier.SelectedValue),
-        //            Convert.ToInt32(cmbDevices.SelectedValue),
-        //            1, // CreatedBy_UserID
-        //            date_P.Value,
-        //            cmbShift.Text,
-        //            numSystemAmount.Value,
-        //            Convert.ToDecimal(lblTotal.Text),
-        //            Convert.ToDecimal(lblDigitalTotal.Text),
-        //            Convert.ToDecimal(lblExpensesTotal.Text),
-        //            Convert.ToDecimal(lblFinalDiff.Text),
-        //            lblStatus.Text,
-        //            (int)txt200.Value, (int)txt100.Value, (int)txt50.Value, (int)txt20.Value,
-        //            (int)txt10.Value, (int)txt5.Value, (int)txt1.Value,
-        //            dtPayments,
-        //            dtExpenses
-        //        );
-
-        //        MessageBox.Show("تم الحفظ بنجاح وتحديث الخزنة!", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        ClearForm();
         //    }
-        //    catch (Exception ex)
+        //    else
         //    {
-        //        MessageBox.Show("خطأ: " + ex.Message);
+        //        // رسالة تنبيه في حال وجود حقول ناقصة (سيقوم الهيلبر بتلوينها بالأحمر تلقائياً)
+        //        MessageBox.Show("يرجى ملء الحقول المطلوبة الملونة بالأحمر أولاً.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         //    }
         //}
+
         private void CalculateTotals()
         {
             // 1. حساب الكاش الفعلي
@@ -398,31 +460,61 @@ namespace Safe_Audit.PL
             CalculateTotals();
 
         }
-
         private void FRM_Add_Settlement_Load(object sender, EventArgs e)
         {
             try
             {
-                // 1. تعبئة البيانات الأساسية (الأجهزة)
+                // 1. تحميل البيانات الأساسية أولاً (الأجهزة والكاشير)
                 cmbDevices.DataSource = settlement.GET_ALL_DEVICES();
                 cmbDevices.DisplayMember = "DeviceName";
                 cmbDevices.ValueMember = "DeviceID";
 
-                // 2. ضبط القائمة المنسدلة للوردية (صباحي/مسائي)
                 if (cmbShift.Items.Count > 0) cmbShift.SelectedIndex = 0;
 
-                // 3. استدعاء ClearForm (الجوكر بتاعنا)
-                // دي هتعمل 3 حاجات: هتجيب آخر ID + 1، وتصفر الجداول، وتصفر المبالغ
-                ClearForm();
-
-                // 4. ضبط التاريخ على تاريخ اليوم لحظة فتح الشاشة
-                date_P.Value = DateTime.Now;
+                // 2. المنطق المطلوب:
+                if (IncomingShiftID > 0)
+                {
+                    // حالة التعديل: نحمل بيانات الوردية الواردة
+                    PerformSearch(IncomingShiftID);
+                }
+                else
+                {
+                    // حالة إضافة جديدة: نصفر الفورم ونجهز رقم وردية جديد
+                    ClearForm();
+                    date_P.Value = DateTime.Now;
+                    IsEditMode = false;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("حدث خطأ أثناء تحميل البيانات: " + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("حدث خطأ أثناء تحميل البيانات: " + ex.Message);
             }
         }
+        //private void FRM_Add_Settlement_Load(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        // 1. تعبئة البيانات الأساسية (الأجهزة)
+        //        cmbDevices.DataSource = settlement.GET_ALL_DEVICES();
+        //        cmbDevices.DisplayMember = "DeviceName";
+        //        cmbDevices.ValueMember = "DeviceID";
+
+        //        // 2. ضبط القائمة المنسدلة للوردية (صباحي/مسائي)
+        //        if (cmbShift.Items.Count > 0) cmbShift.SelectedIndex = 0;
+
+        //        // 3. استدعاء ClearForm (الجوكر بتاعنا)
+        //        // دي هتعمل 3 حاجات: هتجيب آخر ID + 1، وتصفر الجداول، وتصفر المبالغ
+        //        ClearForm();
+
+        //        // 4. ضبط التاريخ على تاريخ اليوم لحظة فتح الشاشة
+        //        date_P.Value = DateTime.Now;
+        //        PerformSearch(IncomingShiftID);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("حدث خطأ أثناء تحميل البيانات: " + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         private void lblTotal_TextChanged(object sender, EventArgs e)
         {
@@ -435,6 +527,46 @@ namespace Safe_Audit.PL
         {
            // lblTotalDisplay.Text = Convert.ToDecimal(lblTotal.Text) + Convert.ToDecimal(lblDigitalTotal.Text) + "";
         }
+        public void PerformSearch(decimal sID)
+        {
+            if (sID <= 0) return;
+            try
+            {
+                // نضع الرقم في خانة البحث
+                numSearchID.Value = sID;
+
+                // نضغط زر البحث برمجياً لجلب البيانات من الداتابيز
+                btnSearchShift.PerformClick();
+
+                // بمجرد تعبئة البيانات، ننتقل لوضع التعديل
+                IsEditMode = true;
+                btnSave.Text = "تعديل الوردية";
+                btnSave.BackColor = Color.Orange;
+
+                // نغلق خانة رقم الوردية وخانة البحث لمنع الارتباك أثناء التعديل
+                numShiftID.Enabled = false;
+                numSearchID.Enabled = false;
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+        //public void PerformSearch(decimal sID)
+        //{
+        //    if (sID <= 0) return;
+        //    try
+        //    {
+        //        numSearchID.Value = sID;
+        //        btnSearchShift.PerformClick();
+        //           // ضع هنا كل كود البحث الذي كتبته سابقاً (GetSettlementByID, GetCashDenominations, إلخ)
+        //           // باستخدام المتغير sID
+
+        //           // في نهاية الدالة إذا نجح البحث:
+        //           IsEditMode = true;
+        //        btnSave.Text = "تعديل الوردية";
+        //        btnSave.BackColor = Color.Orange;
+        //        numSearchID.Enabled = false;
+        //    }
+        //    catch (Exception ex) { MessageBox.Show(ex.Message); }
+        //}
         public void btnSearchShift_Click(object sender, EventArgs e)
         {
             try
@@ -506,77 +638,7 @@ namespace Safe_Audit.PL
                 MessageBox.Show("خطأ تقني: " + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //private void btnSearchShift_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        decimal sID = numSearchID.Value;
-        //        if (sID <= 0) return;
-
-        //        // 1. جلب البيانات الأساسية (Shift_Settlements)
-        //        DataTable dtMain = settlement.GetSettlementByID((int)sID);
-
-        //        if (dtMain.Rows.Count > 0)
-        //        {
-        //            // --- في حالة النجاح ---
-        //            numSearchID.BackColor = Color.White; // إعادة اللون للطبيعي
-
-        //            DataRow dr = dtMain.Rows[0];
-        //            numShiftID.Value = Convert.ToDecimal(dr["ShiftID"]);
-        //            cmbCashier.SelectedValue = dr["CashierID"];
-        //            cmbDevices.SelectedValue = dr["DeviceID"];
-        //            cmbShift.Text = dr["ShiftType"].ToString();
-        //            numSystemAmount.Value = Convert.ToDecimal(dr["SystemAmount"]);
-
-        //            // 2. فئات النقدية
-        //            DataTable dtCash = settlement.GetCashDenominations(sID);
-        //            if (dtCash.Rows.Count > 0)
-        //            {
-        //                DataRow drCash = dtCash.Rows[0];
-        //                txt200.Value = Convert.ToInt32(drCash["F200"]);
-        //                txt100.Value = Convert.ToInt32(drCash["F100"]);
-        //                txt50.Value = Convert.ToInt32(drCash["F50"]);
-        //                txt20.Value = Convert.ToInt32(drCash["F20"]);
-        //                txt10.Value = Convert.ToInt32(drCash["F10"]);
-        //                txt5.Value = Convert.ToInt32(drCash["F5"]);
-        //                txt1.Value = Convert.ToInt32(drCash["F1"]);
-        //            }
-
-        //            // 3. المدفوعات (مع جلب الاسم)
-        //            dgvPayments.Rows.Clear();
-        //            DataTable dtPay = settlement.GetPaymentsByID((int)sID);
-        //            foreach (DataRow row in dtPay.Rows)
-        //            {
-        //                dgvPayments.Rows.Add(row["MethodID"], row["DetailID"], row["MethodName"], row["Amount"]);
-        //            }
-
-        //            // 4. المصروفات
-        //            dgvExpenses.Rows.Clear();
-        //            DataTable dtExp = settlement.GetExpensesByID((int)sID);
-        //            foreach (DataRow row in dtExp.Rows)
-        //            {
-        //                dgvExpenses.Rows.Add(row["ExpenseID"], row["Reason"], row["Amount"]);
-        //            }
-
-        //            CalculateTotals();
-        //            MessageBox.Show("تم استرجاع البيانات بنجاح", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-        //        else
-        //        {
-        //            // --- في حالة عدم وجود بيانات (التحذير) ---
-        //            numSearchID.BackColor = Color.IndianRed; // تغيير اللون للأحمر الخفيف (تحذير)
-        //            MessageBox.Show($"عفواً، رقم الوردية ({sID}) غير مسجل في النظام.", "بيانات غير موجودة", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-        //            ClearForm(); // تنظيف الشاشة من أي أرقام قديمة
-        //            numSearchID.Focus();
-        //            numSearchID.Select(0, numSearchID.Value.ToString().Length);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("خطأ تقني: " + ex.Message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
+  
 
         private void numSystemAmount_ValueChanged(object sender, EventArgs e)
         {
