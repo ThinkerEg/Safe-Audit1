@@ -56,6 +56,12 @@
     <Compile Include="BL\GlobalUser.cs" />
     <Compile Include="BL\HelperMethods.cs" />
     <Compile Include="DAL\DataAccessLayer.cs" />
+    <Compile Include="PL\FRM_EditLogs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PL\FRM_EditLogs.Designer.cs">
+      <DependentUpon>FRM_EditLogs.cs</DependentUpon>
+    </Compile>
     <Compile Include="PL\FRM_AccountStatement.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PL\FRM_Add_Settlement.resx">
       <DependentUpon>FRM_Add_Settlement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PL\FRM_EditLogs.resx">
+      <DependentUpon>FRM_EditLogs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PL\FRM_ExpensesList.resx">
       <DependentUpon>FRM_ExpensesList.cs</DependentUpon>

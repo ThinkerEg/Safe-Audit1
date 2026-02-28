@@ -183,5 +183,17 @@ namespace Safe_Audit.BL
             DAL.ExecuteCommand("SP_UPDATE_FULL_SETTLEMENT", param);
             DAL.Close();
         }
+        public DataTable GetEditLogs(DateTime from, DateTime to)
+        {
+            DAL.DataAccessLayer DAL = new DAL.DataAccessLayer(); // تأكد من اسم الكلاس عندك
+            SqlParameter[] param = new SqlParameter[2];
+            param[0] = new SqlParameter("@From", SqlDbType.DateTime) { Value = from };
+            param[1] = new SqlParameter("@To", SqlDbType.DateTime) { Value = to };
+
+            DAL.Open();
+            DataTable dt = DAL.SelectData("SP_GET_EDIT_LOGS", param);
+            DAL.Close();
+            return dt;
+        }
     }
 }

@@ -120,5 +120,10 @@ namespace Safe_Audit.PL
         {
             HelperMethods.OpenChildForm(new FRM_Search_Settlements());
         }
+
+        private void btn_EditLogs_Click(object sender, EventArgs e)
+        {
+            HelperMethods.OpenChildForm(new FRM_EditLogs());
+        }
     }
 }

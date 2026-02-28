@@ -18,6 +18,7 @@
         private void InitializeComponent()
         {
             this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.btn_EditLogs = new System.Windows.Forms.Button();
             this.btn_Search_Settlements = new System.Windows.Forms.Button();
             this.btn_ExpensesList = new System.Windows.Forms.Button();
             this.btnSettlement = new System.Windows.Forms.Button();
@@ -34,6 +35,7 @@
             // pnlSidebar
             // 
             this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.pnlSidebar.Controls.Add(this.btn_EditLogs);
             this.pnlSidebar.Controls.Add(this.btn_Search_Settlements);
             this.pnlSidebar.Controls.Add(this.btn_ExpensesList);
             this.pnlSidebar.Controls.Add(this.btnSettlement);
@@ -47,15 +49,28 @@
             this.pnlSidebar.Size = new System.Drawing.Size(200, 636);
             this.pnlSidebar.TabIndex = 1;
             // 
+            // btn_EditLogs
+            // 
+            this.btn_EditLogs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_EditLogs.FlatAppearance.BorderSize = 0;
+            this.btn_EditLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_EditLogs.ForeColor = System.Drawing.Color.White;
+            this.btn_EditLogs.Location = new System.Drawing.Point(0, 240);
+            this.btn_EditLogs.Name = "btn_EditLogs";
+            this.btn_EditLogs.Size = new System.Drawing.Size(200, 40);
+            this.btn_EditLogs.TabIndex = 7;
+            this.btn_EditLogs.Text = "تقرير محذوفات التسويات";
+            this.btn_EditLogs.Click += new System.EventHandler(this.btn_EditLogs_Click);
+            // 
             // btn_Search_Settlements
             // 
             this.btn_Search_Settlements.Dock = System.Windows.Forms.DockStyle.Top;
             this.btn_Search_Settlements.FlatAppearance.BorderSize = 0;
             this.btn_Search_Settlements.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Search_Settlements.ForeColor = System.Drawing.Color.White;
-            this.btn_Search_Settlements.Location = new System.Drawing.Point(0, 300);
+            this.btn_Search_Settlements.Location = new System.Drawing.Point(0, 200);
             this.btn_Search_Settlements.Name = "btn_Search_Settlements";
-            this.btn_Search_Settlements.Size = new System.Drawing.Size(200, 60);
+            this.btn_Search_Settlements.Size = new System.Drawing.Size(200, 40);
             this.btn_Search_Settlements.TabIndex = 6;
             this.btn_Search_Settlements.Text = "تقرير التسويات المالية";
             this.btn_Search_Settlements.Click += new System.EventHandler(this.btn_Search_Settlements_Click);
@@ -66,9 +81,9 @@
             this.btn_ExpensesList.FlatAppearance.BorderSize = 0;
             this.btn_ExpensesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_ExpensesList.ForeColor = System.Drawing.Color.White;
-            this.btn_ExpensesList.Location = new System.Drawing.Point(0, 240);
+            this.btn_ExpensesList.Location = new System.Drawing.Point(0, 160);
             this.btn_ExpensesList.Name = "btn_ExpensesList";
-            this.btn_ExpensesList.Size = new System.Drawing.Size(200, 60);
+            this.btn_ExpensesList.Size = new System.Drawing.Size(200, 40);
             this.btn_ExpensesList.TabIndex = 5;
             this.btn_ExpensesList.Text = "إدارة المصروفات";
             this.btn_ExpensesList.Click += new System.EventHandler(this.btn_ExpensesList_Click);
@@ -79,9 +94,9 @@
             this.btnSettlement.FlatAppearance.BorderSize = 0;
             this.btnSettlement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSettlement.ForeColor = System.Drawing.Color.White;
-            this.btnSettlement.Location = new System.Drawing.Point(0, 180);
+            this.btnSettlement.Location = new System.Drawing.Point(0, 120);
             this.btnSettlement.Name = "btnSettlement";
-            this.btnSettlement.Size = new System.Drawing.Size(200, 60);
+            this.btnSettlement.Size = new System.Drawing.Size(200, 40);
             this.btnSettlement.TabIndex = 4;
             this.btnSettlement.Text = "إضافة تسوية مالية";
             this.btnSettlement.Click += new System.EventHandler(this.btnSettlement_Click);
@@ -105,9 +120,9 @@
             this.btnTransfers.FlatAppearance.BorderSize = 0;
             this.btnTransfers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTransfers.ForeColor = System.Drawing.Color.White;
-            this.btnTransfers.Location = new System.Drawing.Point(0, 120);
+            this.btnTransfers.Location = new System.Drawing.Point(0, 80);
             this.btnTransfers.Name = "btnTransfers";
-            this.btnTransfers.Size = new System.Drawing.Size(200, 60);
+            this.btnTransfers.Size = new System.Drawing.Size(200, 40);
             this.btnTransfers.TabIndex = 1;
             this.btnTransfers.Text = "التحويلات المالية";
             this.btnTransfers.Click += new System.EventHandler(this.btnTransfers_Click);
@@ -120,9 +135,9 @@
             this.btnStatement.FlatAppearance.BorderSize = 0;
             this.btnStatement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStatement.ForeColor = System.Drawing.Color.White;
-            this.btnStatement.Location = new System.Drawing.Point(0, 60);
+            this.btnStatement.Location = new System.Drawing.Point(0, 40);
             this.btnStatement.Name = "btnStatement";
-            this.btnStatement.Size = new System.Drawing.Size(200, 60);
+            this.btnStatement.Size = new System.Drawing.Size(200, 40);
             this.btnStatement.TabIndex = 2;
             this.btnStatement.Text = "كشف الحساب";
             this.btnStatement.Click += new System.EventHandler(this.btnAccountStatement_Click);
@@ -137,7 +152,7 @@
             this.btnAccounts.ForeColor = System.Drawing.Color.White;
             this.btnAccounts.Location = new System.Drawing.Point(0, 0);
             this.btnAccounts.Name = "btnAccounts";
-            this.btnAccounts.Size = new System.Drawing.Size(200, 60);
+            this.btnAccounts.Size = new System.Drawing.Size(200, 40);
             this.btnAccounts.TabIndex = 3;
             this.btnAccounts.Text = "إدارة الحسابات";
             this.btnAccounts.Click += new System.EventHandler(this.btnAccounts_Click);
@@ -195,5 +210,6 @@
         private System.Windows.Forms.Button btnSettlement;
         private System.Windows.Forms.Button btn_ExpensesList;
         private System.Windows.Forms.Button btn_Search_Settlements;
+        private System.Windows.Forms.Button btn_EditLogs;
     }
 }
