@@ -17,8 +17,9 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.btn_FinancialMovements = new System.Windows.Forms.Button();
             this.btn_EditLogs = new System.Windows.Forms.Button();
             this.btn_Search_Settlements = new System.Windows.Forms.Button();
             this.btn_ExpensesList = new System.Windows.Forms.Button();
@@ -34,36 +35,35 @@
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutCards = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlCash = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblCashVal = new System.Windows.Forms.Label();
             this.lblCashTitle = new System.Windows.Forms.Label();
             this.pnlDigital = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblDigitalVal = new System.Windows.Forms.Label();
             this.lblDigitalTitle = new System.Windows.Forms.Label();
             this.pnlExpenses = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.lblExpVal = new System.Windows.Forms.Label();
             this.lblExpTitle = new System.Windows.Forms.Label();
             this.dgvBalances = new System.Windows.Forms.DataGridView();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.pnlSidebar.SuspendLayout();
             this.pnlHeader.SuspendLayout();
             this.pnlTop.SuspendLayout();
             this.flowLayoutCards.SuspendLayout();
             this.pnlCash.SuspendLayout();
-            this.pnlDigital.SuspendLayout();
-            this.pnlExpenses.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBalances)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pnlDigital.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.pnlExpenses.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBalances)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlSidebar
             // 
             this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.pnlSidebar.Controls.Add(this.button1);
+            this.pnlSidebar.Controls.Add(this.btn_FinancialMovements);
             this.pnlSidebar.Controls.Add(this.btn_EditLogs);
             this.pnlSidebar.Controls.Add(this.btn_Search_Settlements);
             this.pnlSidebar.Controls.Add(this.btn_ExpensesList);
@@ -77,6 +77,19 @@
             this.pnlSidebar.Name = "pnlSidebar";
             this.pnlSidebar.Size = new System.Drawing.Size(200, 728);
             this.pnlSidebar.TabIndex = 1;
+            // 
+            // btn_FinancialMovements
+            // 
+            this.btn_FinancialMovements.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_FinancialMovements.FlatAppearance.BorderSize = 0;
+            this.btn_FinancialMovements.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_FinancialMovements.ForeColor = System.Drawing.Color.White;
+            this.btn_FinancialMovements.Location = new System.Drawing.Point(0, 280);
+            this.btn_FinancialMovements.Name = "btn_FinancialMovements";
+            this.btn_FinancialMovements.Size = new System.Drawing.Size(200, 40);
+            this.btn_FinancialMovements.TabIndex = 8;
+            this.btn_FinancialMovements.Text = "\"الحركات المالية\" (قبض وصرف)";
+            this.btn_FinancialMovements.Click += new System.EventHandler(this.btn_FinancialMovements_Click);
             // 
             // btn_EditLogs
             // 
@@ -262,6 +275,16 @@
             this.pnlCash.Size = new System.Drawing.Size(300, 120);
             this.pnlCash.TabIndex = 0;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Safe_Audit.Properties.Resources.إجمالي_الكاش;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
             // lblCashVal
             // 
             this.lblCashVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
@@ -293,6 +316,16 @@
             this.pnlDigital.Name = "pnlDigital";
             this.pnlDigital.Size = new System.Drawing.Size(300, 120);
             this.pnlDigital.TabIndex = 1;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Safe_Audit.Properties.Resources.إجمالي_الفيزا;
+            this.pictureBox2.Location = new System.Drawing.Point(3, 0);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
             // 
             // lblDigitalVal
             // 
@@ -326,6 +359,16 @@
             this.pnlExpenses.Size = new System.Drawing.Size(300, 120);
             this.pnlExpenses.TabIndex = 2;
             // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::Safe_Audit.Properties.Resources.إجمالي_المصروفات_اليوم;
+            this.pictureBox3.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 3;
+            this.pictureBox3.TabStop = false;
+            // 
             // lblExpVal
             // 
             this.lblExpVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
@@ -354,14 +397,14 @@
             this.dgvBalances.BackgroundColor = System.Drawing.Color.White;
             this.dgvBalances.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvBalances.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvBalances.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvBalances.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvBalances.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvBalances.Location = new System.Drawing.Point(0, 280);
             this.dgvBalances.Name = "dgvBalances";
@@ -371,48 +414,6 @@
             this.dgvBalances.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvBalances.Size = new System.Drawing.Size(957, 448);
             this.dgvBalances.TabIndex = 5;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Safe_Audit.Properties.Resources.إجمالي_الكاش;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::Safe_Audit.Properties.Resources.إجمالي_الفيزا;
-            this.pictureBox2.Location = new System.Drawing.Point(3, 0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(100, 50);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::Safe_Audit.Properties.Resources.إجمالي_المصروفات_اليوم;
-            this.pictureBox3.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(100, 50);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox3.TabIndex = 3;
-            this.pictureBox3.TabStop = false;
-            // 
-            // button1
-            // 
-            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(0, 280);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 40);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "\"الحركات المالية\" (قبض وصرف)";
             // 
             // FRM_Main
             // 
@@ -436,14 +437,14 @@
             this.flowLayoutCards.ResumeLayout(false);
             this.pnlCash.ResumeLayout(false);
             this.pnlCash.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlDigital.ResumeLayout(false);
             this.pnlDigital.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.pnlExpenses.ResumeLayout(false);
             this.pnlExpenses.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvBalances)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBalances)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -478,6 +479,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_FinancialMovements;
     }
 }

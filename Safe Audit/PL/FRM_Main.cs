@@ -184,5 +184,11 @@ namespace Safe_Audit.PL
                 MessageBox.Show("خطأ في تحديث الأرقام: " + ex.Message);
             }
         }
+
+        private void btn_FinancialMovements_Click(object sender, EventArgs e)
+        {
+            
+                  HelperMethods.OpenChildForm(new FRM_FinancialMovements());
+        }
     }
 }
