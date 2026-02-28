@@ -86,6 +86,12 @@
     <Compile Include="PL\FRM_ExpensesList.Designer.cs">
       <DependentUpon>FRM_ExpensesList.cs</DependentUpon>
     </Compile>
+    <Compile Include="PL\FRM_FinancialMovements.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PL\FRM_FinancialMovements.Designer.cs">
+      <DependentUpon>FRM_FinancialMovements.cs</DependentUpon>
+    </Compile>
     <Compile Include="PL\FRM_Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +127,9 @@
     <EmbeddedResource Include="PL\FRM_ExpensesList.resx">
       <DependentUpon>FRM_ExpensesList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PL\FRM_FinancialMovements.resx">
+      <DependentUpon>FRM_FinancialMovements.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PL\FRM_Main.resx">
       <DependentUpon>FRM_Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,7 +162,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\إجمالي الكاش.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\إجمالي المصروفات اليوم.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\إجمالي الفيزا.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

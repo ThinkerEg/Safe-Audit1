@@ -125,5 +125,64 @@ namespace Safe_Audit.PL
         {
             HelperMethods.OpenChildForm(new FRM_EditLogs());
         }
+
+        private void FRM_Main_Load(object sender, EventArgs e)
+        {
+            // السماح بتحريك النموذج من خلال الهيدر
+            pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+
+            // استدعاء دالة تحميل البيانات فور التشغيل
+            RefreshDashboard();
+        }
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            // إعادة تحميل البيانات لتحديث الأرقام والجدول
+            RefreshDashboard();
+
+            // تنبيه بسيط للمستخدم (اختياري)
+            // MessageBox.Show("تم تحديث البيانات بنجاح", "تحديث", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void RefreshDashboard()
+        {
+            try
+            {
+                // إنشاء كائن من كلاس العمليات
+                BL.CLS_Accounts acc = new BL.CLS_Accounts();
+
+                // جلب البيانات من الكلاس الوسيط
+                DataTable dt = acc.GetAccountsBalanceSummary();
+
+                // عرض البيانات في الجدول
+                dgvBalances.DataSource = dt;
+                // تحسين مظهر الجدول (اختياري)
+                dgvBalances.Columns[0].Width = 150; // عرض اسم الحساب مثلاً
+
+                // تحديث الليبلات (Labels) بناءً على القيم المحسوبة في الـ DataTable أو عبر استعلامات منفصلة
+                // ملاحظة: يفضل أن يكون الإجراء المخزن يعيد الأرصدة الكلية أيضاً لسرعة الأداء
+                UpdateBalanceLabels();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("خطأ في تحديث البيانات: " + ex.Message);
+            }
+        }
+        private void UpdateBalanceLabels()
+        {
+            try
+            {
+                // إنشاء كائن من الكلاس الذي عدلناه فوق
+                BL.CLS_Accounts acc = new BL.CLS_Accounts();
+
+                // إسناد القيم لليبلات الموجودة على الواجهة
+                lblCashVal.Text = acc.GetTotalCashBalance();
+                lblDigitalVal.Text = acc.GetTotalDigitalBalance();
+                lblExpVal.Text = acc.GetTotalExpenses();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("خطأ في تحديث الأرقام: " + ex.Message);
+            }
+        }
     }
 }

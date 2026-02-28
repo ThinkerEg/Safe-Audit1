@@ -59,5 +59,35 @@ namespace Safe_Audit.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap إجمالي_الفيزا {
+            get {
+                object obj = ResourceManager.GetObject("إجمالي الفيزا", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap إجمالي_الكاش {
+            get {
+                object obj = ResourceManager.GetObject("إجمالي الكاش", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap إجمالي_المصروفات_اليوم {
+            get {
+                object obj = ResourceManager.GetObject("إجمالي المصروفات اليوم", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
