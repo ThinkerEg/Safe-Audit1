@@ -78,11 +78,11 @@ namespace Safe_Audit.BL
             cmd.ExecuteNonQuery();
             DAL.Close();
         }
-        public DataTable GET_ALL_DEVICES()
-        {
-            // بننادي على اسم الإجراء اللي عملناه في SQL
-            return DAL.SelectData("SP_GET_ALL_DEVICES", null);
-        }
+        //public DataTable GET_ALL_DEVICES()
+        //{
+        //    // بننادي على اسم الإجراء اللي عملناه في SQL
+        //    return DAL.SelectData("SP_GET_ALL_DEVICES", null);
+        //}
         public DataTable GET_LAST_SHIFT_ID()
         {
             DAL.DataAccessLayer DAL = new DAL.DataAccessLayer();

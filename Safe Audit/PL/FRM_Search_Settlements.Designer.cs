@@ -17,7 +17,7 @@
 
         private void InitializeComponent()
         {
-            this.pnlTop = new System.Windows.Forms.Panel();
+            this.pnlHeader = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.grpFilters = new System.Windows.Forms.GroupBox();
@@ -35,21 +35,21 @@
             this.lblDate = new System.Windows.Forms.Label();
             this.dtpFrom = new System.Windows.Forms.DateTimePicker();
             this.dgvResults = new System.Windows.Forms.DataGridView();
-            this.pnlTop.SuspendLayout();
+            this.pnlHeader.SuspendLayout();
             this.grpFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).BeginInit();
             this.SuspendLayout();
             // 
-            // pnlTop
+            // pnlHeader
             // 
-            this.pnlTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.pnlTop.Controls.Add(this.btnClose);
-            this.pnlTop.Controls.Add(this.lblTitle);
-            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTop.Location = new System.Drawing.Point(0, 0);
-            this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1000, 45);
-            this.pnlTop.TabIndex = 0;
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.pnlHeader.Controls.Add(this.btnClose);
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1000, 45);
+            this.pnlHeader.TabIndex = 0;
             // 
             // btnClose
             // 
@@ -230,13 +230,13 @@
             this.ClientSize = new System.Drawing.Size(1000, 600);
             this.Controls.Add(this.dgvResults);
             this.Controls.Add(this.grpFilters);
-            this.Controls.Add(this.pnlTop);
+            this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FRM_Search_Settlements";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.FRM_Search_Settlements_Load);
-            this.pnlTop.ResumeLayout(false);
-            this.pnlTop.PerformLayout();
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
             this.grpFilters.ResumeLayout(false);
             this.grpFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResults)).EndInit();
@@ -246,7 +246,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel pnlTop;
+        private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.GroupBox grpFilters;

@@ -2,93 +2,53 @@
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using Safe_Audit.BL; // تأكد من استدعاء كلاسات البيزنس
+using Safe_Audit.BL;
 
 namespace Safe_Audit.PL
 {
     public partial class FRM_CashierDebts : Form
     {
-        CLS_Settlements stl = new CLS_Settlements(); // كلاس التسويات والعجز
-        CLS_Accounts acc = new CLS_Accounts();       // كلاس الحركات المالية
+        CLS_Settlements stl = new CLS_Settlements();
 
         public FRM_CashierDebts()
         {
             InitializeComponent();
+            // تفعيل السحب والحواف إذا كنت تستخدم الـ Helper
+            // HelperMethods.PrepareForm(this); 
             LoadCashiers();
         }
 
-        // 1. تحميل قائمة الكاشيرية
+        // 1. تحميل قائمة الكاشيرية عند فتح الشاشة
         void LoadCashiers()
         {
             try
             {
-                cmbCashiers.DataSource = stl.GET_ALL_CASHIERS();
+                DataTable dt = stl.GET_ALL_CASHIERS();
+                cmbCashiers.DataSource = dt;
                 cmbCashiers.DisplayMember = "CashierName";
                 cmbCashiers.ValueMember = "CashierID";
-                cmbCashiers.SelectedIndex = -1;
+                cmbCashiers.SelectedIndex = -1; // البدء بدون اختيار
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex) { MessageBox.Show("خطأ في تحميل الكاشيرية: " + ex.Message); }
         }
-        //private void cmbCashier_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    // التحقق من أن الكومبو بوكس ظاهر وأن هناك قيمة مختارة فعلياً
-        //    if (cmbCashier.Visible && cmbCashier.SelectedValue != null)
-        //    {
-        //        try
-        //        {
-        //            //MessageBox.Show(cmbCashier.SelectedValue + "");
-        //            // جلب المديونية باستخدام الكلاس المختص
-        //            decimal debt = ALL_CASHIER.GetCashierRemainingDebt(Convert.ToInt32(cmbCashier.SelectedValue));
-        //            // MessageBox.Show(debt + "");
-        //            if (debt > 0)
-        //            {
-        //                lblCashierBalance.Text = "المديونية الحالية: " + debt.ToString("N2") + " ج.م";
-        //                lblCashierBalance.ForeColor = System.Drawing.Color.Red; // تنبيه باللون الأحمر
-        //                numAmount.Value = debt; // وضع المبلغ تلقائياً لتسهيل السداد
-        //            }
-        //            else
-        //            {
-        //                lblCashierBalance.Text = "لا توجد مديونية مستحقة";
-        //                lblCashierBalance.ForeColor = System.Drawing.Color.Green; // أخضر للدلالة على عدم وجود عجز
-        //                numAmount.Value = 0;
-        //            }
 
-        //            lblCashierBalance.Visible = true;
-        //        }
-        //        catch (Exception ex)
-        //        {
-
-        //            MessageBox.Show(ex + "");// في حالة حدوث خطأ أثناء التحميل أو التحويل
-        //            lblCashierBalance.Visible = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        lblCashierBalance.Visible = false;
-        //    }
-
-        //}
-        // 2. عند اختيار كاشير (عرض الأرقام والجدول)
+        // 2. الحدث الذي يعمل عند اختيار اسم كاشير
         private void cmbCashiers_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // التحقق من وجود اختيار حقيقي وليس مجرد تحميل للبيانات
             if (cmbCashiers.SelectedValue == null || cmbCashiers.SelectedValue is DataRowView) return;
 
             try
             {
                 int cashierID = Convert.ToInt32(cmbCashiers.SelectedValue);
 
-                // 1. جلب المديونية الصافية (للملصقات/Labels)
-                decimal debt = stl.GetCashierRemainingDebt(cashierID);
-                lblNetDebt.Text = debt.ToString("N2");
-                lblNetDebt.ForeColor = debt > 0 ? Color.Red : Color.Green;
-
-                // 2. جلب جدول الحركات (الصح هنا إننا ننادي الدالة اللي بترجع DataTable)
-                // دي الدالة اللي عملناها في كلاس BL وبترجع الـ Union
-                DataTable dt = stl.GetCashierTransactionsReport(cashierID);
-                dgvTransactions.DataSource = dt;
-
-                // تنسيق الجدول
+                // أ- جلب جدول الحركات وعرضه في الـ DataGridView
+                DataTable dtReport = stl.GetCashierTransactionsReport(cashierID);
+                dgvTransactions.DataSource = dtReport;
                 FormatGrid();
+
+                // ب- حساب الإجماليات من الـ DataTable لعرضها في الـ Labels
+                CalculateSummary(dtReport, cashierID);
             }
             catch (Exception ex)
             {
@@ -96,6 +56,61 @@ namespace Safe_Audit.PL
             }
         }
 
+        // 3. دالة حساب الملخص (الصافي، المسدد، العجز)
+        void CalculateSummary(DataTable dt, int cashierID)
+        {
+            decimal totalShortage = 0;
+            decimal totalPaid = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                // استخدام الرقم (Index) أضمن من الاسم العربي
+                decimal amount = Convert.ToDecimal(row[2]); // عمود المبلغ
+                string type = row[1].ToString();           // عمود نوع الحركة
+
+                if (type.Contains("عجز"))
+                    totalShortage += amount;
+                else if (type.Contains("سداد نقدي"))
+                    totalPaid += amount;
+            }
+
+            lblTotalShortage.Text = "إجمالي العجز: " + totalShortage.ToString("N2");
+            lblTotalPaid.Text = "إجمالي المسدد: " + totalPaid.ToString("N2");
+
+            decimal netDebt = stl.GetCashierRemainingDebt(cashierID);
+            lblNetDebt.Text = "صافي المديونية: " + netDebt.ToString("N2");
+
+            lblNetDebt.ForeColor = netDebt > 0 ? Color.FromArgb(192, 57, 43) : Color.FromArgb(39, 174, 96);
+        }
+        //void CalculateSummary(DataTable dt, int cashierID)
+        //{
+        //    decimal totalShortage = 0;
+        //    decimal totalPaid = 0;
+
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        decimal amount = Convert.ToDecimal(row["المبلغ"]);
+        //        string type = row["نوع الحركة"].ToString();
+
+        //        if (type.Contains("عجز")) // تأكد أن الكلمة مطابقة لما يخرج من الـ Database
+        //            totalShortage += amount;
+        //        else if (type.Contains("سداد"))
+        //            totalPaid += amount;
+        //    }
+
+        //    // تحديث الأدوات الموجودة في الـ Designer فعلياً
+        //    lblTotalShortage.Text = "إجمالي العجز: " + totalShortage.ToString("N2");
+        //    lblTotalPaid.Text = "إجمالي المسدد: " + totalPaid.ToString("N2");
+
+        //    // جلب الصافي المتبقي من الدالة المخصصة في الـ BL
+        //    decimal netDebt = stl.GetCashierRemainingDebt(cashierID);
+        //    lblNetDebt.Text = "صافي المديونية: " + netDebt.ToString("N2");
+
+        //    // تلوين الصافي (أحمر لو عليه فلوس، أخضر لو خالص)
+        //    lblNetDebt.ForeColor = netDebt > 0 ? Color.FromArgb(192, 57, 43) : Color.FromArgb(39, 174, 96);
+        //}
+
+        // 4. تنسيق جدول البيانات
         void FormatGrid()
         {
             if (dgvTransactions.Columns.Count > 0)
@@ -105,40 +120,49 @@ namespace Safe_Audit.PL
                 dgvTransactions.Columns[2].HeaderText = "المبلغ";
                 dgvTransactions.Columns[3].HeaderText = "ملاحظات";
 
-                // تلوين الصفوف (اختياري لتمييز السداد عن العجز)
-                foreach (DataGridViewRow row in dgvTransactions.Rows)
-                {
-                    if (row.Cells[1].Value.ToString().Contains("سداد"))
-                        row.DefaultCellStyle.BackColor = Color.LightGreen;
-                }
+                // تحسين المظهر
+                dgvTransactions.EnableHeadersVisualStyles = false;
+                dgvTransactions.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(41, 128, 185);
+                dgvTransactions.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             }
         }
 
-        // 3. الزرار السحري (Shortcut السداد)
+        // 5. زر إضافة سداد جديد (F2)
         private void btnPayShortcut_Click(object sender, EventArgs e)
         {
-            if (cmbCashiers.SelectedValue == null)
+            if (cmbCashiers.SelectedValue == null || cmbCashiers.SelectedValue is DataRowView)
             {
                 MessageBox.Show("من فضلك اختر الكاشير أولاً");
                 return;
             }
 
-            // فتح فورم الحركات المالية
+            // نفتح فورم الحركات المالية
             FRM_FinancialMovements frm = new FRM_FinancialMovements();
 
-            // تمرير البيانات للفورم الآخر (يجب أن يكون لديك ميثود استقبال هناك أو تجعل الأدوات Public)
-            frm.Show(); // نفتح الفورم أولاً
+            // تمرير الكاشير المختار للفورم الآخر (تأكد من وجود هذه الدالة في FRM_FinancialMovements)
+            // frm.SetExternalCashier(Convert.ToInt32(cmbCashiers.SelectedValue));
 
-            // استهداف الأدوات مباشرة (بما أننا في نفس الـ Namespace)
-            // ملاحظة: تأكد من جعل Modifiers للأدوات في فورم الحركات "Public" من شاشة التصميم
-            frm.SetExternalCashier(Convert.ToInt32(cmbCashiers.SelectedValue));
+            frm.ShowDialog(); // ShowDialog تجبر المستخدم على إنهاء العملية قبل العودة هنا
 
-            // تحديث البيانات بعد إغلاق فورم السداد
-            frm.FormClosed += (s, args) => { cmbCashiers_SelectedIndexChanged(null, null); };
+            // تحديث البيانات تلقائياً بعد إغلاق شاشة السداد
+            cmbCashiers_SelectedIndexChanged(null, null);
         }
 
-        private void btnClose_Click(object sender, EventArgs e) => this.Close();
+        // 6. زر التحديث
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            cmbCashiers_SelectedIndexChanged(null, null);
+        }
 
-        private void btnRefresh_Click(object sender, EventArgs e) => cmbCashiers_SelectedIndexChanged(null, null);
+        // 7. زر الإغلاق
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void FRM_CashierDebts_Load(object sender, EventArgs e)
+        {
+            pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+        }
     }
 }

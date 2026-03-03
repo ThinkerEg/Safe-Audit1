@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="BL\CLS_Accounts.cs" />
     <Compile Include="BL\CLS_AuditLogs.cs" />
+    <Compile Include="BL\CLS_CASHIERS.cs" />
+    <Compile Include="BL\CLS_DEVICES.cs" />
     <Compile Include="BL\CLS_Expenses.cs" />
     <Compile Include="BL\CLS_Permissions.cs" />
     <Compile Include="BL\CLS_Settlements.cs" />
@@ -61,6 +63,18 @@
     </Compile>
     <Compile Include="PL\FRM_CashierDebts.Designer.cs">
       <DependentUpon>FRM_CashierDebts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PL\FRM_CASHIERS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PL\FRM_CASHIERS.Designer.cs">
+      <DependentUpon>FRM_CASHIERS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PL\FRM_DEVICES.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PL\FRM_DEVICES.Designer.cs">
+      <DependentUpon>FRM_DEVICES.cs</DependentUpon>
     </Compile>
     <Compile Include="PL\FRM_EditLogs.cs">
       <SubType>Form</SubType>
@@ -129,6 +143,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PL\FRM_CashierDebts.resx">
       <DependentUpon>FRM_CashierDebts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PL\FRM_CASHIERS.resx">
+      <DependentUpon>FRM_CASHIERS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PL\FRM_DEVICES.resx">
+      <DependentUpon>FRM_DEVICES.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PL\FRM_EditLogs.resx">
       <DependentUpon>FRM_EditLogs.cs</DependentUpon>

@@ -11,6 +11,8 @@ namespace Safe_Audit.PL
     {
         // استدعاء طبقة العمليات
         CLS_Settlements settlement = new CLS_Settlements();
+        // استدعاء كلاس العمليات الخاصة بالأجهزة
+        CLS_DEVICES dev = new CLS_DEVICES();
         bool IsEditMode = false;
         // متغير لحفظ الرقم القادم من شاشة البحث (إفتراضياً 0 يعني إضافة جديدة)
         public decimal IncomingShiftID = 0;
@@ -465,7 +467,7 @@ namespace Safe_Audit.PL
             try
             {
                 // 1. تحميل البيانات الأساسية أولاً (الأجهزة والكاشير)
-                cmbDevices.DataSource = settlement.GET_ALL_DEVICES();
+                cmbDevices.DataSource = dev.GET_ALL_DEVICES();
                 cmbDevices.DisplayMember = "DeviceName";
                 cmbDevices.ValueMember = "DeviceID";
 

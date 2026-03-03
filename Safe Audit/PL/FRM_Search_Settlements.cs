@@ -9,7 +9,8 @@ namespace Safe_Audit.PL
     public partial class FRM_Search_Settlements : Form
     {
         CLS_Settlements settlement = new CLS_Settlements();
-
+        // استدعاء كلاس العمليات الخاصة بالأجهزة
+        CLS_DEVICES dev = new CLS_DEVICES();
         public FRM_Search_Settlements()
         {
             InitializeComponent();
@@ -52,6 +53,7 @@ namespace Safe_Audit.PL
 
         private void FRM_Search_Settlements_Load(object sender, EventArgs e)
         {
+            pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
             try
             {
                 // تعبئة الكاشيرات
@@ -62,7 +64,7 @@ namespace Safe_Audit.PL
                 cmbCashiers.SelectedIndex = -1;
 
                 // تعبئة الأجهزة
-                DataTable dtDevices = settlement.GET_ALL_DEVICES();
+                DataTable dtDevices = dev.GET_ALL_DEVICES();
                 cmbDevices.DataSource = dtDevices;
                 cmbDevices.DisplayMember = "DeviceName";
                 cmbDevices.ValueMember = "DeviceID";
