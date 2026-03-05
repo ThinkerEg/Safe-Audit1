@@ -18,7 +18,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlSidebar = new System.Windows.Forms.Panel();
             this.btn_Users = new System.Windows.Forms.Button();
             this.btn_CONFIG = new System.Windows.Forms.Button();
@@ -107,7 +107,7 @@
             this.btn_Users.Name = "btn_Users";
             this.btn_Users.Size = new System.Drawing.Size(200, 40);
             this.btn_Users.TabIndex = 13;
-            this.btn_Users.Text = "إعدادات الاتصال بالسيرفر";
+            this.btn_Users.Text = "ادارة المستخدمين";
             this.btn_Users.Click += new System.EventHandler(this.btn_Users_Click);
             // 
             // btn_CONFIG
@@ -451,14 +451,14 @@
             this.dgvBalances.BackgroundColor = System.Drawing.Color.White;
             this.dgvBalances.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvBalances.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvBalances.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(122)))), ((int)(((byte)(204)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvBalances.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvBalances.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvBalances.Location = new System.Drawing.Point(0, 280);
             this.dgvBalances.Name = "dgvBalances";
