@@ -148,7 +148,7 @@ namespace Safe_Audit.PL
             HelperMethods.FormFadeIn(this);
 
             // 2. تفعيل تحريك الفورم عن طريق الهيدر
-            pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+           // //pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
 
             // 3. تنسيق الأزرار والجداول دفعة واحدة من الهيلبر
             HelperMethods.StyleButtons(this);
@@ -167,7 +167,7 @@ namespace Safe_Audit.PL
         //    UpdateLayoutDesign();
 
         //    // 3. تحريك الفورم باستخدام الهيلبر (كود سطر واحد بدل اللخبطة)
-        //    pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+        //    //pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
 
         //    // 4. تحميل البيانات (تأكد أنك تناديها مرة واحدة فقط)
         //    LoadData();

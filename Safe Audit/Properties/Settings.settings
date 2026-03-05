@@ -29,5 +29,14 @@
     <Setting Name="Backup" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="HeaderColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">44, 62, 80</Value>
+    </Setting>
+    <Setting Name="PrimaryColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">52, 152, 219</Value>
+    </Setting>
+    <Setting Name="BackColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">244, 247, 249</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

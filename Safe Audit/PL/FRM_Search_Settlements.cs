@@ -53,7 +53,7 @@ namespace Safe_Audit.PL
 
         private void FRM_Search_Settlements_Load(object sender, EventArgs e)
         {
-            pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+            //pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
             try
             {
                 // تعبئة الكاشيرات

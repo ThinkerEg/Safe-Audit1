@@ -63,7 +63,7 @@ namespace Safe_Audit.PL
         //    HelperMethods.ApplyRoundedCorners(grpFilters, 20);
 
         //    // تحريك الفورم من الهيدر
-        //    pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+        //    ////pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
 
         //    // تطبيق الهوية البصرية (الألوان المعتمدة)
         //    this.BackColor = HelperMethods.BackColor;
@@ -96,7 +96,7 @@ namespace Safe_Audit.PL
             HelperMethods.StyleButtons(this); // دي بتنسق الأزرار والجداول والحواف داخلياً
 
             // 2. تفعيل تحريك الفورم
-            pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+            //////pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
 
             // 3. ضبط الإعدادات الخاصة بالبيانات فقط
             dtpFrom.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);

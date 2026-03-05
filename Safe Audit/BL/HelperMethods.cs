@@ -8,15 +8,72 @@ namespace Safe_Audit.BL
 {
     public static class HelperMethods
     {
-        #region الألوان الأساسية
-        public static Color HeaderColor = Color.FromArgb(41, 128, 185);//45, 52, 71
-        public static Color PrimaryColor = Color.FromArgb(41, 128, 185);
-        public static Color SuccessColor = Color.FromArgb(39, 174, 96);
-        public static Color DangerColor = Color.FromArgb(192, 57, 43);
-        public static Color WarningColor = Color.FromArgb(243, 156, 18);
-        public static Color BackColor = Color.FromArgb(236, 240, 241);
-        #endregion
+        ////#region الألوان الأساسية
+        ////public static Color HeaderColor = Color.FromArgb(41, 128, 185);
+        ////public static Color PrimaryColor = Color.FromArgb(41, 128, 185);
+        ////public static Color SuccessColor = Color.FromArgb(39, 174, 96);
+        ////public static Color DangerColor = Color.FromArgb(192, 57, 43);
+        ////public static Color WarningColor = Color.FromArgb(243, 156, 18);
+        ////public static Color BackColor = Color.FromArgb(236, 240, 241);
+        ////#endregion
+        //#region الألوان الأساسية الجديدة
+        //// كحلي غامق وقور جداً للهيدر
+        //public static Color HeaderColor = Color.FromArgb(44, 62, 80);
 
+        //// أزرق ملكي للأزرار الرئيسية
+        //public static Color PrimaryColor = Color.FromArgb(52, 152, 219);
+
+        //// أخضر زمردي للعمليات الناجحة
+        //public static Color SuccessColor = Color.FromArgb(46, 204, 113);
+
+        //// أحمر هادي للتحذيرات
+        //public static Color DangerColor = Color.FromArgb(231, 76, 60);
+
+        //// برتقالي شيك للتنبيهات
+        //public static Color WarningColor = Color.FromArgb(241, 196, 15);
+
+        //// رمادي "ثلجي" مريح جداً للعين في الخلفية
+        //public static Color BackColor = Color.FromArgb(244, 247, 249);
+        //#endregion
+        public static void ResetToDefault()
+        {
+            HeaderColor = Color.FromArgb(44, 62, 80);
+            PrimaryColor = Color.FromArgb(52, 152, 219);
+            BackColor = Color.FromArgb(244, 247, 249);
+            Properties.Settings.Default.Save();
+        }
+        #region الألوان الأساسية الديناميكية
+        // نستخدم الـ Getter لجعل المتغير يقرأ من الإعدادات المحفوظة في كل مرة يُستدعى فيها
+        public static Color HeaderColor
+        {
+            get { return Properties.Settings.Default.HeaderColor; }
+            set { Properties.Settings.Default.HeaderColor = value; }
+        }
+
+        public static Color PrimaryColor
+        {
+            get { return Properties.Settings.Default.PrimaryColor; }
+            set { Properties.Settings.Default.PrimaryColor = value; }
+        }
+
+        public static Color BackColor
+        {
+            get { return Properties.Settings.Default.BackColor; }
+            set { Properties.Settings.Default.BackColor = value; }
+        }
+
+        // لو اللون فاتح خلي الخط أسود، لو غامق خليه أبيض
+        public static Color GetContrastColor(Color backgroundColor)
+        {
+            // معادلة رياضية لحساب سطوع اللون
+            double luminance = (0.299 * backgroundColor.R + 0.587 * backgroundColor.G + 0.114 * backgroundColor.B) / 255;
+            return luminance > 0.5 ? Color.Black : Color.White; // لو اللون فاتح خلي الخط أسود، لو غامق خليه أبيض
+        }
+        // الألوان الوظيفية (يفضل بقاؤها ثابتة للاتساق أو ربطها بالإعدادات بنفس الطريقة)
+        public static Color SuccessColor = Color.FromArgb(46, 204, 113);
+        public static Color DangerColor = Color.FromArgb(231, 76, 60);
+        public static Color WarningColor = Color.FromArgb(241, 196, 15);
+        #endregion
         #region تحريك الفورم
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         public static extern void ReleaseCapture();
@@ -63,6 +120,7 @@ namespace Safe_Audit.BL
                 Panel pnlHeader = headers[0] as Panel;
                 if (pnlHeader != null)
                     pnlHeader.MouseDown += delegate { MoveForm(frm.Handle); };
+                pnlHeader.BackColor = HeaderColor;
             }
 
             StyleAllControls(frm);
@@ -72,6 +130,8 @@ namespace Safe_Audit.BL
         public static void OpenChildForm(Form childForm)
         {
             childForm.StartPosition = FormStartPosition.CenterScreen;
+            // السطر السحري: لازم نضمن إن الفورم رسمت عناصرها في الذاكرة الأول
+            childForm.CreateControl();
             PrepareForm(childForm);
             childForm.Show();
         }
@@ -106,38 +166,85 @@ namespace Safe_Audit.BL
         {
             StyleAllControls(frm);
         }
-
+        // النسخة دي هي اللي هتحل المشكلة لأنها بتقبل Panel أو أي حاوية
+        public static void StyleButtons(Control container)
+        {
+            StyleAllControls(container);
+        }
         public static void StyleAllControls(Control parent)
         {
             foreach (Control c in parent.Controls)
             {
-                // الأزرار
                 Button btn = c as Button;
                 if (btn != null)
                 {
                     btn.FlatStyle = FlatStyle.Flat;
                     btn.FlatAppearance.BorderSize = 0;
                     btn.Cursor = Cursors.Hand;
-                    if (btn.Name.ToLower().Contains("close") || btn.Text.Trim() == "X")
+
+                    if (btn.Name.ToLower().Contains("close") || btn.Text.Trim() == "X" || btn.Text.Trim() == "خروج")
                     {
                         btn.FlatAppearance.MouseOverBackColor = Color.Red;
                         btn.FlatAppearance.MouseDownBackColor = Color.DarkRed;
+                    }
+                    else if (parent.Name.ToLower().Contains("sidebar"))
+                    {
+                        btn.BackColor = Color.Transparent;
+                        btn.ForeColor = Color.White;
+                        // هنا مش بنعمل ApplyModernCorners عشان القائمة تفضل متساوية
                     }
                     else if (btn.BackColor == SystemColors.Control || btn.BackColor == Color.Transparent)
                     {
                         btn.BackColor = PrimaryColor;
                         btn.ForeColor = Color.White;
+                        ApplyModernCorners(btn, 10); // خلي الحواف الدائرية للأزرار العادية فقط
                     }
-                    ApplyModernCorners(btn, 10);
                 }
 
-                // الجداول
+                      // الجداول
                 DataGridView dgv = c as DataGridView;
                 if (dgv != null) FormatDataGridView(dgv);
 
                 if (c.HasChildren) StyleAllControls(c);
             }
         }
+        //public static void StyleAllControls(Control parent)
+        //{
+        //    foreach (Control c in parent.Controls)
+        //    {
+        //        // الأزرار
+        //        Button btn = c as Button;
+        //        if (btn != null)
+        //        {
+        //            btn.FlatStyle = FlatStyle.Flat;
+        //            btn.FlatAppearance.BorderSize = 0;
+        //            btn.Cursor = Cursors.Hand;
+        //            if (btn.Name.ToLower().Contains("close") || btn.Text.Trim() == "X")
+        //            {
+        //                btn.FlatAppearance.MouseOverBackColor = Color.Red;
+        //                btn.FlatAppearance.MouseDownBackColor = Color.DarkRed;
+        //            }
+        //            else if (parent.Name.ToLower().Contains("sidebar"))
+        //            {
+        //                btn.BackColor = Color.Transparent;
+        //                btn.ForeColor = Color.White;
+        //                // هنا لا نطبق ApplyModernCorners للحفاظ على استقامة القائمة
+        //            }
+        //            else if (btn.BackColor == SystemColors.Control || btn.BackColor == Color.Transparent)
+        //            {
+        //                btn.BackColor = PrimaryColor;
+        //                btn.ForeColor = Color.White;
+        //            }
+        //            ApplyModernCorners(btn, 10);
+        //        }
+
+        //        // الجداول
+        //        DataGridView dgv = c as DataGridView;
+        //        if (dgv != null) FormatDataGridView(dgv);
+
+        //        if (c.HasChildren) StyleAllControls(c);
+        //    }
+        //}
 
         public static void FormatDataGridView(DataGridView dgv)
         {

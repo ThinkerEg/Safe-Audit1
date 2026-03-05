@@ -96,6 +96,7 @@
             this.grpMain.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpMain.Location = new System.Drawing.Point(20, 65);
             this.grpMain.Name = "grpMain";
+            this.grpMain.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.grpMain.Size = new System.Drawing.Size(420, 505);
             this.grpMain.TabIndex = 1;
             this.grpMain.TabStop = false;
@@ -274,8 +275,6 @@
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FRM_FinancialMovements";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "الحركات المالية";
             this.pnlHeader.ResumeLayout(false);

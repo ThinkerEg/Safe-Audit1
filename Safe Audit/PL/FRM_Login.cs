@@ -22,7 +22,7 @@ namespace Safe_Audit.PL
         }
         private void FRM_Login_Load(object sender, EventArgs e)
         {
-            pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
+            //pnlHeader.MouseDown += (s, ev) => { HelperMethods.MoveForm(this.Handle); };
             LoadUsers();
             // في الـ Load بتاع الفورم
         }

@@ -17,18 +17,35 @@ namespace Safe_Audit.PL
         {
             InitializeComponent();
 
-            // ربط خلفية الفورم الرئيسية بلون الخلفية الموحد
+            //// ربط خلفية الفورم الرئيسية بلون الخلفية الموحد
+            //this.BackColor = HelperMethods.BackColor;
+
+            //// ربط لون الشريط العلوي (Header)
+            //pnlHeader.BackColor = Color.White; // أو HelperMethods.BackColor إذا أردت توحيدها
+
+            //// ربط لون القائمة الجانبية (Sidebar) باللون الأساسي للبرنامج
+            //statusStrip1.BackColor = pnlTop.BackColor = pnlSidebar.BackColor = HelperMethods.HeaderColor;
+
+            //// تطبيق التنسيقات العامة
+            //HelperMethods.ApplyModernCorners(this, 25);
+            //HelperMethods.StyleButtons(this);
+
+            // 1. توحيد خلفية الفورم
             this.BackColor = HelperMethods.BackColor;
 
-            // ربط لون الشريط العلوي (Header)
-            pnlHeader.BackColor = Color.White; // أو HelperMethods.BackColor إذا أردت توحيدها
+            // 2. ربط ألوان الحاويات الرئيسية بالهوية الجديدة
+            statusStrip1.BackColor = pnlTop.BackColor = pnlSidebar.BackColor = HelperMethods.HeaderColor;
+            pnlHeader.BackColor = Color.White;
 
-            // ربط لون القائمة الجانبية (Sidebar) باللون الأساسي للبرنامج
-            pnlSidebar.BackColor = HelperMethods.HeaderColor;
+            // 3. تنسيق الأزرار (هنا اللعبة)
+            // نستخدم StyleButtons فقط للأزرار الجانبية عشان تاخد الـ Flat Style
+            HelperMethods.StyleButtons(pnlSidebar);
 
-            // تطبيق التنسيقات العامة
-            HelperMethods.ApplyModernCorners(this, 25);
-            HelperMethods.StyleButtons(this);
+            // 4. الحواف الدائرية (طبقها فقط لو الفورم مش Maximized)
+            if (this.WindowState != FormWindowState.Maximized)
+            {
+                HelperMethods.ApplyModernCorners(this, 15); // قلل الرقم لـ 15 عشان الشاشة كبيرة
+            }
         }
 
         #region تحريك الفورم
@@ -242,6 +259,11 @@ namespace Safe_Audit.PL
         {
             // عرض التاريخ والوقت معاً بشكل منسق
             lblServerDate.Text = " | " + DateTime.Now.ToString("yyyy/MM/dd  hh:mm:ss tt");
+        }
+
+        private void btn_ColorSettings_Click(object sender, EventArgs e)
+        {
+            HelperMethods.OpenChildForm(new FRM_ColorSettings());
         }
     }
 }
